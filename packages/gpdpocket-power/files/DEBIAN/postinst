@@ -1,0 +1,11 @@
+#!/bin/sh
+# postinst script for gpdpocket-power
+
+set -e
+
+TLP_CONFIG=/etc/default/tlp
+
+sed -i 's|^DISK_DEVICES=.*$|DISK_DEVICES="mmcblk0"|g'  $TLP_CONFIG
+sed -i 's|^DISK_IOSCHED=.*$|DISK_IOSCHED="deadline"|g' $TLP_CONFIG
+
+# TODO: service stuff (enable/restart)
