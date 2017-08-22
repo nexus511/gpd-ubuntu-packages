@@ -63,7 +63,7 @@ for script in [ "/postinst" ]:
     os.chmod(dst, 0555)
 
 print "building binary package"
-command = ["dpkg-deb", "-b", config.build]
+command = ["fakeroot", "dpkg-deb", "-b", config.build]
 command.append("%s/%s-%s.deb" % (config.output, variables["name"], variables["version"]))
 subprocess.call(command)
 
