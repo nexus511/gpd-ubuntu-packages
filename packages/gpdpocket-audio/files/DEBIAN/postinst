@@ -1,0 +1,16 @@
+#!/bin/sh
+# postinst script for gpdpocket-power
+
+set -e
+
+DEFAULT_PA="/etc/pulse/default.pa"
+DAEMON_CONF="/etc/pulse/daemon.conf"
+
+echo "define default sink and source for pulseaudio"
+sed -i 's|^set-card-profile .*$|set-card-profile alsa_card.platform-cht-bsw-rt5645 HiFi|g' "$DEFAULT_PA"
+sed -i 's|^set-default-sink .*$|set-default-sink alsa_output.platform-cht-bsw-rt5645.HiFi__hw_chtrt5645__sink|g' "$DEFAULT_PA"
+sed -i 's|^set-sink-port .*$|set-sink-port alsa_output.platform-cht-bsw-rt5645.HiFi__hw_chtrt5645__sink [Out] Speaker|g' "$DEFAULT_PA"
+
+
+echo "disable pulse realtime scheduling"
+sed -i 's|^realtime-scheduling .*$|realtime-scheduling = no|g' "$DAEMON_CONF"
