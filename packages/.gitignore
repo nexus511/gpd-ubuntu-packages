@@ -1,4 +1,4 @@
-build
-output
-tmp
+*/build/
+*/output/
+*/tmp/
 
