@@ -9,7 +9,7 @@ class Config(object):
     output = os.path.abspath("output")
     manifest = os.path.abspath("build/DEBIAN")
     temp = os.path.abspath("tmp")
-    version = "0.0.1"
+    version = "0.0.2"
     variables = {
         "architecture": "all",
         "maintainer": "Falk Garbsch <github.com@cyberstalker.eu>",
@@ -37,6 +37,7 @@ copylist = [
     ( 'files/gpd-fan.py', '/usr/local/sbin/gpd-fan', 0755 ),
     ( 'files/gpd-fan.service', '/etc/systemd/system/gpd-fan.service', 0644 ),
     ( 'files/gpd-fan.sh', '/lib/systemd/system-sleep/gpd-fan', 0755 ),
+    ( 'files/tlp', '/etc/default/tlp', 0644 )
 ]
 for src, dst, mode in copylist:
     print ">> copy (0%o) %s" % (mode, dst)
@@ -75,13 +76,16 @@ fp.write(control.format(**variables))
 fp.flush()
 fp.close()
 
-print "copy scripts"
-for script in [ "/postinst" ]:
-    print ">> copy (0555) %s" % (script)
-    src = config.files + "/DEBIAN" + script
-    dst = config.manifest + script
-    shutil.copy(src, dst)
-    os.chmod(dst, 0555)
+print "constructing script files"
+for script in ["/postinst", "/postrm", "/preinst", "/prerm"]:
+    print ">> write DEBIAN%s" % (script)
+    filepath = config.manifest + script
+    content = open(config.templates + script, "rb").read()
+    fp = open(filepath, "wb")
+    fp.write(content.replace("__VERSION_CODE__", variables["version"]))
+    fp.flush()
+    fp.close()
+    os.chmod(filepath, 0555)
 
 print "building binary package"
 command = ["fakeroot", "dpkg-deb", "-b", config.build]

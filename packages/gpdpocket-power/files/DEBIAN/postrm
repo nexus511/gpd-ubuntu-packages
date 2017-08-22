@@ -1,0 +1,13 @@
+#!/bin/sh
+# postinst script for gpdpocket-power
+
+set -e
+
+TLP_CONFIG=/etc/default/tlp
+
+case "$1" in
+  remove|abort-install|disappear)
+    echo "remove diversion for ${TLP_CONFIG}"
+    dpkg-divert --remove --rename "${TLP_CONFIG}"
+    ;;
+esac

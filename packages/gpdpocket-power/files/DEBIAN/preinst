@@ -1,0 +1,11 @@
+#!/bin/sh
+# postinst script for gpdpocket-power
+
+set -e
+
+TLP_CONFIG=/etc/default/tlp
+
+if test "$1" = install; then
+  echo "adding diversion for ${TLP_CONFIG}"
+  dpkg-divert --add --rename "${TLP_CONFIG}"
+fi
