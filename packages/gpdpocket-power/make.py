@@ -9,6 +9,7 @@ class Config(object):
     output = os.path.abspath("output")
     manifest = os.path.abspath("build/DEBIAN")
     temp = os.path.abspath("tmp")
+    templates = os.path.abspath("files/DEBIAN")
     version = "0.0.2"
     variables = {
         "architecture": "all",
