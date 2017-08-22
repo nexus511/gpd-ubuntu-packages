@@ -1,0 +1,14 @@
+#!/bin/sh
+# postinst script for gpdpocket-power
+
+set -e
+
+DEFAULT_PA="/etc/pulse/default.pa"
+DAEMON_CONF="/etc/pulse/daemon.conf"
+
+if test "$1" = install; then
+  echo "adding diversion for ${DEFAULT_PA}"
+  dpkg-divert --add --rename "${DEFAULT_PA}"
+  echo "adding diversion for ${DAEMON_CONF}"
+  dpkg-divert --add --rename "${DAEMON_CONF}"
+fi

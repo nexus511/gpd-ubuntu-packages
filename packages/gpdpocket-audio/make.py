@@ -9,7 +9,8 @@ class Config(object):
     output = os.path.abspath("output")
     manifest = os.path.abspath("build/DEBIAN")
     temp = os.path.abspath("tmp")
-    version = "0.0.1"
+    templates = os.path.abspath("files/DEBIAN")
+    version = "0.0.2"
     variables = {
         "architecture": "all",
         "maintainer": "Falk Garbsch <github.com@cyberstalker.eu>",
@@ -31,9 +32,12 @@ os.makedirs(config.output)
 os.makedirs(config.build)
 os.makedirs(config.manifest)
 
+print "copy files to target"
 copylist = [
     ( 'files/chtrt5645.conf', '/usr/share/alsa/ucm/chtrt5645/chtrt5645.conf', 0644 ),
     ( 'files/HiFi.conf', '/usr/share/alsa/ucm/chtrt5645/HiFi.conf', 0644 ),
+    ( 'files/daemon.conf', '/etc/pulse/daemon.conf', 0644 ),
+    ( 'files/default.pa', '/etc/pulse/default.pa', 0644 )
 ]
 for src, dst, mode in copylist:
     print ">> copy (0%o) %s" % (mode, dst)
@@ -54,13 +58,16 @@ fp.write(control.format(**variables))
 fp.flush()
 fp.close()
 
-print "copy scripts"
-for script in [ "/postinst" ]:
-    print ">> copy (0555) %s" % (script)
-    src = config.files + "/DEBIAN" + script
-    dst = config.manifest + script
-    shutil.copy(src, dst)
-    os.chmod(dst, 0555)
+print "constructing script files"
+for script in ["/postinst", "/postrm", "/preinst", "/prerm"]:
+    print ">> write DEBIAN%s" % (script)
+    filepath = config.manifest + script
+    content = open(config.templates + script, "rb").read()
+    fp = open(filepath, "wb")
+    fp.write(content.replace("__VERSION_CODE__", variables["version"]))
+    fp.flush()
+    fp.close()
+    os.chmod(filepath, 0555)
 
 print "building binary package"
 command = ["fakeroot", "dpkg-deb", "-b", config.build]
