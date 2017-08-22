@@ -1,4 +1,4 @@
-Package: {name}-{version}
+Package: {name}
 Source: {name}
 Version: {version}
 Architecture: {architecture}
