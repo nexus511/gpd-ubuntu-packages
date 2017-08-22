@@ -1,9 +1,0 @@
-Package: {name}-{version}
-Source: {name}
-Version: {version}
-Architecture: {architecture}
-Maintainer: {maintainer}
-Depends: lm-sensors, thermald, tlp
-Section: admin
-Priority: optional
-Description: Power daemon for GPD Pocket.
