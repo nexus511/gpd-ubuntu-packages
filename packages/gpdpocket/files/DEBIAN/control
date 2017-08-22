@@ -3,7 +3,7 @@ Source: {name}
 Version: {version}
 Architecture: {architecture}
 Maintainer: {maintainer}
-Depends: lm-sensors, thermald, tlp
+Depends: gpdpocket-xorg, linux-image-gpdpocket, gpdpocket-power
 Section: admin
 Priority: optional
-Description: Power daemon for GPD Pocket.
+Description: Meta package that pulls most of the other gpdpocket packages.
