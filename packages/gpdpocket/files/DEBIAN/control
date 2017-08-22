@@ -1,0 +1,9 @@
+Package: {name}-{version}
+Source: {name}
+Version: {version}
+Architecture: {architecture}
+Maintainer: {maintainer}
+Depends: gpdpocket-xorg, linux-image-gpdpocket, gpdpocket-power
+Section: admin
+Priority: optional
+Description: Meta package that pulls most of the other gpdpocket packages.
