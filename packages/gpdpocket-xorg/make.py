@@ -63,15 +63,13 @@ for src, dst, mode in copylist:
     shutil.copy(src, dst)
     os.chmod(dst, mode)
 
-# print "create blacklist item"
-# blacklist = config.build + "/etc/pm/config.d/brcmfmac"
-# dn = os.path.dirname(blacklist)
-# if not os.path.isdir(dn):
-#     os.makedirs(dn)
-# fp = open(blacklist, "wb")
-# fp.write("SUSPEND_MODULES=\"brcmfmac\"\n")
-# fp.flush()
-# fp.close()
+print "enable systemd service"
+src = "/etc/systemd/system/gpd-rotate.service"
+dst = config.build + "/etc/systemd/system/multi-user.target.wants/gpd-rotate.service"
+dn = os.path.dirname(dst)
+if not os.path.exists(dst):
+    os.makedirs(dn)
+os.symlink(src, dst)
 
 print "write control"
 variables = config.variables
@@ -81,14 +79,6 @@ fp = open(config.manifest + "/control", "wb")
 fp.write(control.format(**variables))
 fp.flush()
 fp.close()
-
-# print "copy scripts"
-# for script in [ "/postinst" ]:
-#     print ">> copy (0555) %s" % (script)
-#     src = config.files + "/DEBIAN" + script
-#     dst = config.manifest + script
-#     shutil.copy(src, dst)
-#     os.chmod(dst, 0555)
 
 print "building binary package"
 command = ["dpkg-deb", "-b", config.build]

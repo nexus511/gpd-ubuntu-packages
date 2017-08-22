@@ -48,6 +48,14 @@ for src, dst, mode in copylist:
     shutil.copy(src, dst)
     os.chmod(dst, mode)
 
+print "enable systemd service"
+src = "/etc/systemd/system/gpd-fan.service"
+dst = config.build + "/etc/systemd/system/basic.target.wants/gpd-fan.service"
+dn = os.path.dirname(dst)
+if not os.path.exists(dst):
+    os.makedirs(dn)
+os.symlink(src, dst)
+
 print "create blacklist item"
 blacklist = config.build + "/etc/pm/config.d/brcmfmac"
 dn = os.path.dirname(blacklist)
