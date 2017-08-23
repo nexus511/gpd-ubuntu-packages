@@ -12,9 +12,9 @@ all: $(MAKE_TARGETS)
 
 update_repo: repo
 	cp -v */*/output/*.deb $(REPO_DIR)
-	dpkg-sig -k $(KEY_ID) $(REPO_DIR)/*.deb
+	(cd $(REPO_DIR); dpkg-sig -k $(KEY_ID) *.deb)
 	cp $(KEYFILE) $(REPO_BASE)
-	dpkg-scanpackages -m $(REPO_DIR)        >$(REPO_DIR)/Packages
+	(cd $(REPO_DIR); dpkg-scanpackages -m . >Packages)
 	cat $(REPO_DIR)/Packages | gzip --fast  >$(REPO_DIR)/Packages.gz
 	cat $(REPO_DIR)/Packages | xz -z        >$(REPO_DIR)/Packages.xz
 	cat $(REPO_DIR)/Packages | lzma -z      >$(REPO_DIR)/Packages.lz
