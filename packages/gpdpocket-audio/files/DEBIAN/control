@@ -4,6 +4,6 @@ Version: {version}
 Architecture: {architecture}
 Maintainer: {maintainer}
 Depends: gstreamer1.0-vaapi, pulseaudio
-Section: admin
+Section:  admin
 Priority: optional
 Description: Audio configuration for GPD Pocket.
