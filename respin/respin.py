@@ -90,7 +90,7 @@ try:
 	print "backup some files"
 	shutil.move(config.root + "/etc/resolv.conf", config.root + "/etc/resolv.conf.distrib")
 	shutil.copy(config.root + "/etc/apt/sources.list", config.root + "/etc/apt/sources.list.distrib")
-	shutil.copy(config.root + "/etc/initramfs-tools/modules", config.root + "/etc/initramfs-tools/modules.distrib")
+	#shutil.copy(config.root + "/etc/initramfs-tools/modules", config.root + "/etc/initramfs-tools/modules.distrib")
 
 	print "update target configuration"
 	shutil.copy("/etc/resolv.conf", config.root + "/etc/resolv.conf")
@@ -122,7 +122,7 @@ try:
 
 	print "restore target configuration"
 	shutil.move(config.root + "/etc/apt/sources.list.distrib", config.root + "/etc/apt/sources.list")
-	shutil.move(config.root + "/etc/initramfs-tools/modules.distrib", config.root + "/etc/initramfs-tools/modules")
+	#shutil.move(config.root + "/etc/initramfs-tools/modules.distrib", config.root + "/etc/initramfs-tools/modules")
 
 	print "ensure that gpdpocket repo is left behind"
 	fp = open(config.root + "/etc/apt/sources.list", "a")
