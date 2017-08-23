@@ -89,7 +89,7 @@ for fs in config.pseudo_fs:
 try:
 	print "backup some files"
 	shutil.move(config.root + "/etc/resolv.conf", config.root + "/etc/resolv.conf.distrib")
-	shutil.copy(config.root + "/etc/apt/sources.list", config.root + "/etc/apt/sources.list.distrib")
+	#shutil.copy(config.root + "/etc/apt/sources.list", config.root + "/etc/apt/sources.list.distrib")
 	#shutil.copy(config.root + "/etc/initramfs-tools/modules", config.root + "/etc/initramfs-tools/modules.distrib")
 
 	print "update target configuration"
@@ -107,7 +107,7 @@ try:
 	print "activate repository on target"
 	command = ["chroot", config.root, "apt-key", "add", "/tmp/repo/keyFile"]
 	assert(subprocess.call(command) == 0)
-	fp = open(config.root + "/etc/apt/sources.list", "a")
+	fp = open(config.root + "/etc/apt/sources.list.d/gpdpocket.list", "wb")
 	fp.write("deb file:///tmp/repo /\n")
 	fp.write("deb http://de.archive.ubuntu.com/ubuntu/ xenial universe\n")
 	fp.flush()
@@ -120,12 +120,12 @@ try:
 	command += config.packages
 	assert(subprocess.call(command) == 0)
 
-	print "restore target configuration"
-	shutil.move(config.root + "/etc/apt/sources.list.distrib", config.root + "/etc/apt/sources.list")
+	#print "restore target configuration"
+	#shutil.move(config.root + "/etc/apt/sources.list.distrib", config.root + "/etc/apt/sources.list")
 	#shutil.move(config.root + "/etc/initramfs-tools/modules.distrib", config.root + "/etc/initramfs-tools/modules")
 
 	print "ensure that gpdpocket repo is left behind"
-	fp = open(config.root + "/etc/apt/sources.list", "a")
+	fp = open(config.root + "/etc/apt/sources.list.d/gpdpocket.list", "wb")
 	fp.write("# gpdpocket packages")
 	fp.write("deb https://apt.nexus511.net/repo/dists/stable/main/binary /\n")
 	fp.flush()
