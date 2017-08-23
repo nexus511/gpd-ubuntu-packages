@@ -1,0 +1,10 @@
+Package: {name}
+Source: {name}
+Version: {version}
+Architecture: {architecture}
+Maintainer: {maintainer}
+Section: xfce
+Priority: optional
+Description: XFCE4 Configuration for GPD Pocket.
+ This package actually places some defaults into the user skeleton directory.
+ It does not change any settings for existing users.
