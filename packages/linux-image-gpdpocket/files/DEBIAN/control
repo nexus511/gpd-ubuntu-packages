@@ -4,13 +4,12 @@ Version: {versionCode}
 Architecture: {architecture}
 Maintainer: {maintainer}
 Installed-Size: 65383
-Depends: initramfs-tools | linux-initramfs-tool, kmod
+Depends: initramfs-tools | linux-initramfs-tool, kmod, linux-firmware-gpdpocket
 Recommends: grub-pc | grub-efi-amd64 | grub-efi-ia32 | grub | lilo
 Suggests: fdutils, linux-tools
-Provides: fuse-module, ivtv-modules, kvm-api-4, linux-image, redhat-cluster-modules, spl-dkms, virtualbox-guest-modules, zfs-dkms, linux-firmware
+Provides: fuse-module, ivtv-modules, kvm-api-4, linux-image, redhat-cluster-modules, spl-dkms, virtualbox-guest-modules, zfs-dkms
 Section: kernel
-Conflicts: linux-firmware
-Replaces: atmel-firmware, linux-firmware, linux-restricted-common
+Replaces: linux-image-generic
 Priority: optional
 Description: Linux kernel image for version {versionCode} on 64 bit x86 SMP for GPD Pocket
  This package contains the Linux kernel image for version {versionCode}

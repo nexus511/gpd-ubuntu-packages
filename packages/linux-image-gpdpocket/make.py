@@ -47,20 +47,10 @@ versions = [x[1] for x in filter(lambda x: x[0] == 'lib/modules', [(os.path.dirn
 print ">> found kernel versions: %s" % (", ".join(versions))
 assert(len(versions) == 1)
 
-print "patching brcmfmac4356 firmware"
-copylist = [
-    ( 'files/brcmfmac4356-pcie.bin', '/lib/firmware/brcm/brcmfmac4356-pcie.bin', 0644 ),
-    ( 'files/brcmfmac4356-pcie.txt', '/lib/firmware/brcm/brcmfmac4356-pcie.txt', 0644 ),
-]
-for src, dst, mode in copylist:
-    print ">> copy (0%o) %s" % (mode, dst)
-    src = os.path.abspath(src)
-    dst = config.build + dst
-    dn = os.path.dirname(dst)
-    if not os.path.isdir(dn):
-        os.makedirs(dn)
-    shutil.copy(src, dst)
-    os.chmod(dst, mode)
+print "moving firmware to kernel directory"
+shutil.move(config.build + "/lib/firmware", config.build + "/lib/" + versions[0])
+os.makedirs(config.build + "/lib/firmware")
+shutil.move(config.build + "/lib/" + versions[0], config.build + "/lib/firmware/" + versions[0])
 
 print "constructing control file"
 control = open(config.templates + "/control", "rb").read()

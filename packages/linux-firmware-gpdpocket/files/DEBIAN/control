@@ -1,0 +1,13 @@
+Package: {name}
+Version: {version}
+Architecture: {architecture}
+Maintainer: {maintainer}
+Installed-Size: 194027
+Conflicts: atmel-firmware, linux-firmware
+Replaces: atmel-firmware, linux-restricted-common, linux-firmware
+Provides: atmel-firmware, linux-firmware
+Section: misc
+Priority: optional
+Multi-Arch: foreign
+Description: Firmware for Linux kernel drivers for GPD Pocket.
+ This package provides firmware used by Linux kernel drivers.
