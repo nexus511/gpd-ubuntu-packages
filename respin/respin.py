@@ -3,6 +3,7 @@ import sys
 import shutil
 import subprocess
 import traceback
+from cStringIO import StringIO
 
 class Config(object):
 	def __init__(self, args):
@@ -91,6 +92,19 @@ try:
 	shutil.move(config.root + "/etc/resolv.conf", config.root + "/etc/resolv.conf.distrib")
 	#shutil.copy(config.root + "/etc/apt/sources.list", config.root + "/etc/apt/sources.list.distrib")
 	#shutil.copy(config.root + "/etc/initramfs-tools/modules", config.root + "/etc/initramfs-tools/modules.distrib")
+
+	print "update grub configuration"
+	fp = open(config.root + "/boot/default/grub", "rb")
+	out = StringIO()
+	for line in fp.readlines():
+		if not line.startswith("GRUB_CMDLINE_LINUX_DEFAULT"):
+			out.write(line)
+			continue
+		out.write("GRUB_CMDLINE_LINUX_DEFAULT=\"i915.fastboot=1 fbcon=rotate:1\"\n")
+	fp = open(config.root + "/boot/default/grub", "wb")
+	fp.write(out.getvalue())
+	fp.flush()
+	fp.close()
 
 	print "update target configuration"
 	shutil.copy("/etc/resolv.conf", config.root + "/etc/resolv.conf")
