@@ -37,7 +37,7 @@ class Config(object):
 		self.keyfile = self.repo_base + "/keyFile"
 		self.root = self.clone_squashfs
 
-		self.packages = ["gpdpocket", "gpdpocket-xfce-config"]
+		self.packages = ["gpdpocket"]
 		self.packages += self.additional
 		self.hybridboot = "/usr/lib/ISOLINUX/isohdpfx.bin"
 		self.volname = "gpdpocket"
