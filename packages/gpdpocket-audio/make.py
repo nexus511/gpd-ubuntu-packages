@@ -34,8 +34,10 @@ os.makedirs(config.manifest)
 
 print "copy files to target"
 copylist = [
-    ( 'files/chtrt5645.conf', '/usr/share/alsa/ucm/chtrt5645/chtrt5645.conf', 0644 ),
-    ( 'files/HiFi.conf', '/usr/share/alsa/ucm/chtrt5645/HiFi.conf', 0644 ),
+    # ( 'files/chtrt5645.conf', '/usr/share/alsa/ucm/chtrt5645/chtrt5645.conf', 0644 ),
+    # ( 'files/HiFi.conf', '/usr/share/alsa/ucm/chtrt5645/HiFi.conf', 0644 ),
+    ( 'files/chtrt5645.conf', '/tmp/gpdpocket-audio/chtrt5645.conf', 0644 ),
+    ( 'files/HiFi.conf', '/tmp/gpdpocket-audio/HiFi.conf', 0644 ),
     ( 'files/daemon.conf', '/etc/pulse/daemon.conf', 0644 ),
     ( 'files/default.pa', '/etc/pulse/default.pa', 0644 )
 ]

@@ -3,5 +3,24 @@
 
 set -e
 
-DEFAULT_PA="/etc/pulse/default.pa"
-DAEMON_CONF="/etc/pulse/daemon.conf"
+# this is a dirty hack but as ubuntu is overwriting some of the files
+# in se future and we want our stuff in place for gpdpocket, this is
+# for now my best idea. diversions would get quite complex if we do not
+# want to break original packages updated later.
+mkdir -p /usr/share/alsa/ucm/chtrt5645
+
+CHTRT5645_CONF=/usr/share/alsa/ucm/chtrt5645/chtrt5645.conf
+HIFI_CONF=/usr/share/alsa/ucm/chtrt5645/HiFi.conf
+
+if [ ! -f ${CHTRT5645_CONF}.gpdpocket-audio ]; then
+	mv ${CHTRT5645_CONF} ${CHTRT5645_CONF}.gpdpocket-audio || true
+fi
+
+if [ ! -f ${HIFI_CONF}.gpdpocket-audio ]; then
+	mv ${HIFI_CONF} ${HIFI_CONF}.gpdpocket-audio || true
+fi
+
+mv /tmp/gpdpocket-audio/chtrt5645.conf ${CHTRT5645_CONF}
+mv /tmp/gpdpocket-audio/HiFi.conf      ${HIFI_CONF}
+rm -rf /tmp/gpdpocket-audio
+

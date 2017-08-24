@@ -6,19 +6,11 @@ set -e
 DEFAULT_PA="/etc/pulse/default.pa"
 DAEMON_CONF="/etc/pulse/daemon.conf"
 CHTRT5645_CONF="/usr/share/alsa/ucm/chtrt5645/chtrt5645.conf"
-
-# Unpacking gpdpocket-audio (0.0.2) ...
-# dpkg: error processing archive /tmp/repo/./gpdpocket-audio-0.0.2.deb (--unpack):
-#  trying to overwrite '/usr/share/alsa/ucm/chtrt5645/chtrt5645.conf', which is also in package libasound2-data 1.1.3-5
+HIFI_CONF="usr/share/alsa/ucm/chtrt5645/HiFi.conf"
 
 if test "$1" = install; then
   echo "adding diversion for ${DEFAULT_PA}"
   dpkg-divert --add --rename "${DEFAULT_PA}"
   echo "adding diversion for ${DAEMON_CONF}"
   dpkg-divert --add --rename "${DAEMON_CONF}"
-
-  if [ -f "$CHTRT5645_CONF" ]; then
-  	echo "adding diversion for ${CHTRT5645_CONF}"
-  	dpkg-divert --add --rename "${CHTRT5645_CONF}"
-  fi
 fi
