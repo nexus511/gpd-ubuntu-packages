@@ -16,7 +16,7 @@ all: make_images
 make_images: $(addsuffix _build,$(IMAGE_FILES))
 
 $(UBUNTU_16_04_3_IMG)_build:
-	python2 respin.py $(UBUNTU_16_04_3)
+	python2 respin.py $(UBUNTU_16_04_3) gpdpocket-gnome-config
 
 #$(UBUNTU_17_04_IMG)_build:
 #	python2 respin.py $(UBUNTU_17_04)
