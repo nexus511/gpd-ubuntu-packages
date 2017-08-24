@@ -1,0 +1,8 @@
+Package: {name}
+Source: {name}
+Version: {version}
+Architecture: {architecture}
+Maintainer: {maintainer}
+Section: gnome
+Priority: optional
+Description: gnome Configuration for GPD Pocket.
