@@ -5,6 +5,7 @@ set -e
 
 DEFAULT_PA="/etc/pulse/default.pa"
 DAEMON_CONF="/etc/pulse/daemon.conf"
+CHTRT5645_CONF="/usr/share/alsa/ucm/chtrt5645/chtrt5645.conf"
 
 case "$1" in
   remove|abort-install|disappear)
@@ -12,5 +13,11 @@ case "$1" in
     dpkg-divert --remove --rename "${DEFAULT_PA}"
     echo "remove diversion for ${DAEMON_CONF}"
     dpkg-divert --remove --rename "${DAEMON_CONF}"
+
+	if dpkg-divert --list | grep -F "${CHTRT5645_CONF}.distrib"; then
+		echo "remove diversion for ${CHTRT5645_CONF}"
+        dpkg-divert --remove --rename "${CHTRT5645_CONF}"
+	fi
     ;;
 esac
+
