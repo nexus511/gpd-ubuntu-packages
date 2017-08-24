@@ -163,7 +163,7 @@ try:
 
 	print "ensure that gpdpocket repo is left behind"
 	fp = open(config.root + "/etc/apt/sources.list.d/gpdpocket.list", "wb")
-	fp.write("# gpdpocket packages")
+	fp.write("# gpdpocket packages\n")
 	fp.write("deb https://apt.nexus511.net/repo/dists/stable/main/binary /\n")
 	fp.flush()
 	fp.close()
