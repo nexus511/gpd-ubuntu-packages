@@ -3,7 +3,7 @@ Source: {name}
 Version: {version}
 Architecture: {architecture}
 Maintainer: {maintainer}
-Depends: i965-va-driver, mesa-utils, va-driver-all, vainfo, x11-xserver-utils
+Depends: i965-va-driver, mesa-utils, va-driver-all, vainfo, x11-xserver-utils, xinput
 Section: x11
 Priority: optional
 Description: X configuration package for GPD Pocket.
