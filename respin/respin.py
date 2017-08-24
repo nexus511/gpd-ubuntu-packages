@@ -153,7 +153,7 @@ try:
 	assert(subprocess.call(command) == 0)
 
 	print "install the gpdpocket packages"
-	command = ["chroot", config.root, "apt", "-y", "install"]
+	command = ["chroot", config.root, "apt", "-y", "--no-install-recommends", "install"]
 	command += config.packages
 	assert(subprocess.call(command) == 0)
 
