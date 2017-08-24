@@ -63,6 +63,7 @@ def clone_image(src, mnt, dst):
 	command = ["umount", mnt]
 	assert(subprocess.call(command) == 0)
 
+os.environ["DEBIAN_FRONTEND"] = "noninteractive"
 config = Config(sys.argv)
 
 cleanup()
