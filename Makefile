@@ -23,5 +23,8 @@ update_repo: repo
 			  gpg --clearsign --digest-algo SHA256 --default-key $(KEY_ID) -o InRelease Release; \
 			  gpg --digest-algo SHA256 --default-key $(KEY_ID) -abs -o Release.gpg Release )
 
+images: update_repo
+	(cd respin && make)
+
 repo:
 	mkdir -p $(REPO_DIR)
