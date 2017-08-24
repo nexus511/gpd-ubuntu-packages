@@ -7,15 +7,21 @@ from cStringIO import StringIO
 
 class Config(object):
 	def __init__(self, args):
+		if len(args) < 2:
+			print "ERROR: need at least an url to an image file"
+			sys.exit(1)
+		self.url = args[1]
+		self.additional = []
+		if len(args) > 2:
+			self.additional += args[2:]
+
 		self.image_dir = os.path.abspath("./images")
 		self.tmp_dir = os.path.abspath("./tmp")
 		self.output_dir = os.path.abspath("./output")
-
-		self.url = args[1]
 		self.name = os.path.basename(self.url)
 		
 		self.image = self.image_dir + "/" + self.name
-		self.output = self.output_dir + "/" + self.name
+		self.output = self.output_dir + "/" + os.path.splitext(self.name)[0] + "_gpdpocket.iso"
 		self.tmp = self.tmp_dir + "/" + self.name
 		self.mount_iso = self.tmp + "/mnt/iso"
 		self.clone_iso = self.tmp + "/data/iso"
@@ -32,9 +38,17 @@ class Config(object):
 		self.root = self.clone_squashfs
 
 		self.packages = ["gpdpocket", "gpdpocket-xfce-config"]
+		self.packages += self.additional
 		self.hybridboot = "/usr/lib/ISOLINUX/isohdpfx.bin"
 		self.volname = "gpdpocket"
 		self.initramfs_modules = [ "btusb", "loop", "overlay", "pwm-lpss", "pwm-lpss-platform", "squashfs" ]
+
+def cleanup():
+	print "cleanup %s" % (config.tmp)
+	try:
+		shutil.rmtree(config.tmp)
+	except:
+		pass
 
 def clone_image(src, mnt, dst):
 	print ">> mount %s -> %s" % (src, mnt)
@@ -51,11 +65,7 @@ def clone_image(src, mnt, dst):
 
 config = Config(sys.argv)
 
-print "cleanup %s" % (config.tmp)
-try:
-	shutil.rmtree(config.tmp)
-except:
-	pass
+cleanup()
 
 if os.path.exists(config.output):
 	print "remove %s" % (config.output)
@@ -67,7 +77,13 @@ for dn in [config.mount_iso, config.mount_squashfs, config.clone_iso, config.clo
 	if not os.path.isdir(dn):
 		os.makedirs(dn)
 
-# TODO: add downloading here
+if not os.path.exists(config.image):
+	print "download image from %s" % (config.url)
+	command = [ "wget", "-O", config.image, config.url ]
+
+print "perform sha256 check on %s" % (config.image)
+command = "grep -F \"images/%s\" files/iso.hashes.sha256sum | sha256sum -c" % (config.name)
+assert(subprocess.call(command, shell = True) == 0)
 
 print "extract files from iso"
 clone_image(config.image, config.mount_iso, config.clone_iso)
@@ -93,15 +109,21 @@ try:
 	#shutil.copy(config.root + "/etc/apt/sources.list", config.root + "/etc/apt/sources.list.distrib")
 	#shutil.copy(config.root + "/etc/initramfs-tools/modules", config.root + "/etc/initramfs-tools/modules.distrib")
 
+	print "find target release codename"
+	command = [ "chroot", config.root, "lsb_release", "-sc" ]
+	data = subprocess.check_output(command)
+	codename = data.split("\n")[0]
+	print ">> codename is %s" % (codename)
+
 	print "update grub configuration"
-	fp = open(config.root + "/boot/default/grub", "rb")
+	fp = open(config.root + "/etc/default/grub", "rb")
 	out = StringIO()
 	for line in fp.readlines():
 		if not line.startswith("GRUB_CMDLINE_LINUX_DEFAULT"):
 			out.write(line)
 			continue
 		out.write("GRUB_CMDLINE_LINUX_DEFAULT=\"i915.fastboot=1 fbcon=rotate:1\"\n")
-	fp = open(config.root + "/boot/default/grub", "wb")
+	fp = open(config.root + "/etc/default/grub", "wb")
 	fp.write(out.getvalue())
 	fp.flush()
 	fp.close()
@@ -123,7 +145,7 @@ try:
 	assert(subprocess.call(command) == 0)
 	fp = open(config.root + "/etc/apt/sources.list.d/gpdpocket.list", "wb")
 	fp.write("deb file:///tmp/repo /\n")
-	fp.write("deb http://de.archive.ubuntu.com/ubuntu/ xenial universe\n")
+	fp.write("deb http://de.archive.ubuntu.com/ubuntu/ %s universe\n" % codename)
 	fp.flush()
 	fp.close()
 	command = ["chroot", config.root, "apt", "update"]
@@ -223,4 +245,5 @@ command = [
 assert(subprocess.call(command) == 0)
 os.chdir(pwd)
 
+cleanup()
 
