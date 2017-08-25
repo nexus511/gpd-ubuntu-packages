@@ -10,6 +10,17 @@ all: $(MAKE_TARGETS)
 %/make.py_build:
 	(cd "`dirname "$@"`"; python2 make.py)
 
+update_kernel: external/kernel
+	(cd $< ; make -j9 INSTALL_MOD_PATH=`realpath ./MODULES` all modules modules_install )
+	tar -cjf bootstrap-kernel-lib.tar.bz2 -C external/kernel/MODULES/ .
+	mkdir -p build/boot
+	cp external/kernel/System.map build/boot/System.map-`sed -e 's|+||g' external/kernel/include/config/kernel.release`
+	cp external/kernel/.config build/boot/config-`sed -e 's|+||g' external/kernel/include/config/kernel.release`
+	cp external/kernel/arch/x86_64/boot/bzImage build/boot/vmlinuz-`sed -e 's|+||g' external/kernel/include/config/kernel.release`
+	tar -cjf bootstrap-kernel-boot.tar.bz2 -C build/ .
+	rm -rf build
+	mv bootstrap-kernel-lib.tar.bz2 bootstrap-kernel-boot.tar.bz2 packages/linux-image-gpdpocket/files/
+
 update_repo: repo
 	cp -v */*/output/*.deb $(REPO_DIR)
 	(cd $(REPO_DIR); dpkg-sig -k $(KEY_ID) *.deb)

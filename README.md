@@ -16,6 +16,12 @@ To properly build the packages you need
 - isolinux
 - xorriso
 
+To build the kernel you will also need
+
+- libelf-dev
+- build-essential
+- libssl-dev
+
 to be installed.
 
 
