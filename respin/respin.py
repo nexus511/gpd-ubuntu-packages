@@ -126,7 +126,7 @@ try:
 	data = subprocess.check_output(command)
 	codename = data.split("\n")[0]
 	if not config.name.startswith("linuxmint"):
-		config.respin_repos += "deb http://de.archive.ubuntu.com/ubuntu/ %s universe\n" % codename
+		config.respin_repos.append("deb http://de.archive.ubuntu.com/ubuntu/ %s universe\n" % codename)
 	print ">> codename is %s" % (codename)
 
 	print "update grub configuration"
