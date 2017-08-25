@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# if apt has removed the touchegg configuration, fix it
+if [ -f /usr/share/touchegg/touchegg.conf.distrib.gpd-pocket -a ! -e /usr/share/touchegg/touchegg.conf ]; then
+	echo "reset original touchegg configuration"
+	mv -v /usr/share/touchegg/touchegg.conf.distrib.gpd-pocket /usr/share/touchegg/touchegg.conf
+fi
+

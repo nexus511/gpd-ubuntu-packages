@@ -1,0 +1,9 @@
+Package: {name}
+Source: {name}
+Version: {version}
+Architecture: {architecture}
+Maintainer: {maintainer}
+Depends: touchegg
+Section: xfce
+Priority: optional
+Description: Package containing configuration defaults for touchegg.

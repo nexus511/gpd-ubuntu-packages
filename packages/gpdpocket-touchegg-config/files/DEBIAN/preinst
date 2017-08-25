@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# backup original configuration, if installed for the first time
+if [ ! -f /usr/share/touchegg/touchegg.conf.gpd-pocket ]; then
+	echo "preparing initial configuration"
+	mv -v /usr/share/touchegg/touchegg.conf /usr/share/touchegg/touchegg.conf.distrib.gpd-pocket || true
+    ln -sf /usr/share/touchegg/touchegg.conf.gpd-pocket /usr/share/touchegg/touchegg.conf
+fi
