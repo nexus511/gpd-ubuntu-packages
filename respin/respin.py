@@ -42,6 +42,11 @@ class Config(object):
 		self.hybridboot = "/usr/lib/ISOLINUX/isohdpfx.bin"
 		self.volname = "gpdpocket"
 		self.initramfs_modules = [ "btusb", "loop", "overlay", "pwm-lpss", "pwm-lpss-platform", "squashfs" ]
+		self.respin_repos = [ "deb file:///tmp/repo /" ]
+		self.system_repos = [ "deb https://apt.nexus511.net/repo/dists/stable/main/binary /"]
+
+		self.vmlinuz = self.clone_iso + "/casper/vmlinuz"
+		self.initrd = self.clone_iso + "/casper/initrd.lz"
 
 def cleanup():
 	print "cleanup %s" % (config.tmp)
@@ -81,6 +86,7 @@ for dn in [config.mount_iso, config.mount_squashfs, config.clone_iso, config.clo
 if not os.path.exists(config.image):
 	print "download image from %s" % (config.url)
 	command = [ "wget", "-O", config.image, config.url ]
+	assert(subprocess.call(command) == 0)
 
 print "perform sha256 check on %s" % (config.image)
 command = "grep -F \"images/%s\" files/iso.hashes.sha256sum | sha256sum -c" % (config.name)
@@ -88,6 +94,13 @@ assert(subprocess.call(command, shell = True) == 0)
 
 print "extract files from iso"
 clone_image(config.image, config.mount_iso, config.clone_iso)
+
+print "check for vmlinuz image"
+if not os.path.exists(config.vmlinuz):
+	config.vmlinuz += ".efi"
+if not os.path.exists(config.vmlinuz):
+	print "ERROR: no kernel image found"
+	sys.exit(1)
 
 print "extract files from squashfs"
 clone_image(config.squashfs_path, config.mount_squashfs, config.clone_squashfs)
@@ -112,6 +125,8 @@ try:
 	command = [ "chroot", config.root, "lsb_release", "-sc" ]
 	data = subprocess.check_output(command)
 	codename = data.split("\n")[0]
+	if not config.name.startswith("linuxmint"):
+		config.respin_repos += "deb http://de.archive.ubuntu.com/ubuntu/ %s universe\n" % codename
 	print ">> codename is %s" % (codename)
 
 	print "update grub configuration"
@@ -143,22 +158,21 @@ try:
 	command = ["chroot", config.root, "apt-key", "add", "/tmp/repo/keyFile"]
 	assert(subprocess.call(command) == 0)
 	fp = open(config.root + "/etc/apt/sources.list.d/gpdpocket.list", "wb")
-	fp.write("deb file:///tmp/repo /\n")
-	fp.write("deb http://de.archive.ubuntu.com/ubuntu/ %s universe\n" % codename)
+	fp.write("%s\n" % ("\n".join(config.respin_repos)))
 	fp.flush()
 	fp.close()
 	command = ["chroot", config.root, "apt", "update"]
 	assert(subprocess.call(command) == 0)
 
 	print "install the gpdpocket packages"
-	command = ["chroot", config.root, "apt", "-y", "--no-install-recommends", "install"]
+	command = ["chroot", config.root, "apt", "install", "-y", "--no-install-recommends"]
 	command += config.packages
 	assert(subprocess.call(command) == 0)
 
 	print "ensure that gpdpocket repo is left behind"
 	fp = open(config.root + "/etc/apt/sources.list.d/gpdpocket.list", "wb")
 	fp.write("# gpdpocket packages\n")
-	fp.write("deb https://apt.nexus511.net/repo/dists/stable/main/binary /\n")
+	fp.write("%s\n" % ("\n".join(config.system_repos)))
 	fp.flush()
 	fp.close()
 	command = [ "chroot", config.root, "apt", "update" ]
@@ -191,8 +205,8 @@ except:
 	sys.exit(1)
 
 print "clone updated kernel to iso"
-shutil.copy(config.root + "/vmlinuz", config.clone_iso + "/casper/vmlinuz.efi")
-shutil.copy(config.root + "/initrd.img", config.clone_iso + "/casper/initrd.lz")
+shutil.copy(config.root + "/vmlinuz", config.vmlinuz)
+shutil.copy(config.root + "/initrd.img", config.initrd)
 
 print "collect filesystem size"
 command = "du -sx --block-size=1 %s | cut -f1" % (config.root)
