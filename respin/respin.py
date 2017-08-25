@@ -28,8 +28,8 @@ class Config(object):
 		self.mount_squashfs = self.tmp + "/mnt/squashfs"
 		self.clone_squashfs = self.tmp + "/data/squashfs"
 		self.squashfs_path = self.clone_iso + "/casper/filesystem.squashfs"
-		self.squashfs_sig = self.clone_iso + "/casper/filesystem.squashfs.gpg"
-		self.squashfs_manifest = self.clone_iso + "/casper/filesystem.squashfs.manifest"
+		self.squashfs_sig = self.squashfs_path + ".gpg"
+		self.squashfs_manifest = self.squashfs_path + ".manifest"
 
 		self.pseudo_fs = ["/dev", "/dev/pts", "/proc", "/sys"]
 		self.repo_base = os.path.abspath("../repo")
@@ -107,8 +107,6 @@ for fs in config.pseudo_fs:
 try:
 	print "backup some files"
 	shutil.move(config.root + "/etc/resolv.conf", config.root + "/etc/resolv.conf.distrib")
-	#shutil.copy(config.root + "/etc/apt/sources.list", config.root + "/etc/apt/sources.list.distrib")
-	#shutil.copy(config.root + "/etc/initramfs-tools/modules", config.root + "/etc/initramfs-tools/modules.distrib")
 
 	print "find target release codename"
 	command = [ "chroot", config.root, "lsb_release", "-sc" ]
@@ -156,10 +154,6 @@ try:
 	command = ["chroot", config.root, "apt", "-y", "--no-install-recommends", "install"]
 	command += config.packages
 	assert(subprocess.call(command) == 0)
-
-	#print "restore target configuration"
-	#shutil.move(config.root + "/etc/apt/sources.list.distrib", config.root + "/etc/apt/sources.list")
-	#shutil.move(config.root + "/etc/initramfs-tools/modules.distrib", config.root + "/etc/initramfs-tools/modules")
 
 	print "ensure that gpdpocket repo is left behind"
 	fp = open(config.root + "/etc/apt/sources.list.d/gpdpocket.list", "wb")
