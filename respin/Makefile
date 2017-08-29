@@ -32,9 +32,11 @@ TARGETS:=$(foreach image,$(IMAGES),$(call target_name,$(image)))
 SYNC_TARGETS:=$(patsubst %.target,%.sync,$(TARGETS))
 TIMESTAMP:=$(shell TZ=UTC date --iso)
 
-test:
-	echo "$(ADDITIONS)"
-	echo "$(call get_additions,xubuntu-16.04.3-desktop-amd64.target)"
+list_targets:
+	$(info supported targets:)
+	$(foreach target,$(TARGETS),$(info :     $(target)))
+	$(info suported syncs:)
+	$(foreach target,$(SYNC_TARGETS),$(info :     $(target)))
 
 all: make_images
 
@@ -43,10 +45,10 @@ sync_images: $(SYNC_TARGETS)
 make_images: $(TARGETS)
 
 %.target:
-	echo $(call lock_call,build.lock,python2 respin.py $(call target_url,$@) $(call output_file_name,$@) $(call get_additions,$@))
+	$(call lock_call,build.lock,python2 respin.py $(call target_url,$@) $(call output_file_name,$@) $(call get_additions,$@))
 
 output/%_gpdpocket_$(TIMESTAMP).iso:
-	make "$*.target"
+	make -j1 TIMESTAMP=$(TIMESTAMP) "$*.target"
 
 %.sync: $(call output_file_name,%)
 	ssh nexus511.repo "mkdir -p $(call sync_directory,$@)"
