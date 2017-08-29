@@ -1,0 +1,17 @@
+#!/bin/sh
+
+echo "provide monitors.xml to users that do not have one"
+for dn in /home/*; do
+  user_directory=$dn
+  user_name=$(sed -ne "s|\(^[^:]*\):.*:/home/falk:.*$|\1|gp;" /etc/passwd)
+  if [ "x$user_name" = "x" ]; then
+    continue
+  fi
+
+  if [ -e "$dn/.config/monitors.xml" ]; then
+    continue
+  fi
+
+  echo "try to set monitors.xml on $user_name"
+  cp -v /etc/skel/.config/monitors.xml "$dn/.config/monitors.xml" || true
+done
