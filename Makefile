@@ -34,6 +34,9 @@ update_repo: repo
 			  gpg --clearsign --digest-algo SHA256 --default-key $(KEY_ID) -o InRelease Release; \
 			  gpg --digest-algo SHA256 --default-key $(KEY_ID) -abs -o Release.gpg Release )
 
+sync_repo: update_repo
+	rsync -va repo/. ssh-rsa nexus511.repo:htdocs/repo_testing
+
 images: update_repo
 	(cd respin && make)
 

@@ -7,21 +7,21 @@ from cStringIO import StringIO
 
 class Config(object):
 	def __init__(self, args):
-		if len(args) < 2:
-			print "ERROR: need at least an url to an image file"
+		if len(args) < 3:
+			print "ERROR: needs at least input and output name"
 			sys.exit(1)
 		self.url = args[1]
+		self.output = os.path.abspath(args[2])
 		self.additional = []
-		if len(args) > 2:
-			self.additional += args[2:]
+		if len(args) > 3:
+			self.additional += args[3:]
 
 		self.image_dir = os.path.abspath("./images")
 		self.tmp_dir = os.path.abspath("./tmp")
-		self.output_dir = os.path.abspath("./output")
+		self.output_dir = os.path.dirname(self.output)
 		self.name = os.path.basename(self.url)
-		
+
 		self.image = self.image_dir + "/" + self.name
-		self.output = self.output_dir + "/" + os.path.splitext(self.name)[0] + "_gpdpocket.iso"
 		self.tmp = self.tmp_dir + "/" + self.name
 		self.mount_iso = self.tmp + "/mnt/iso"
 		self.clone_iso = self.tmp + "/data/iso"
@@ -255,4 +255,3 @@ assert(subprocess.call(command) == 0)
 os.chdir(pwd)
 
 cleanup()
-
