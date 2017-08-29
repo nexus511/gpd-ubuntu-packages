@@ -15,15 +15,5 @@
           <reflect_y>no</reflect_y>
           <primary>yes</primary>
       </output>
-      <output name="DP1">
-      </output>
-      <output name="DP2">
-      </output>
-      <output name="HDMI1">
-      </output>
-      <output name="HDMI2">
-      </output>
-      <output name="VIRTUAL1">
-      </output>
   </configuration>
 </monitors>
