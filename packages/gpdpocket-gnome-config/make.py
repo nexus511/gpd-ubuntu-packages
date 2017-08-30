@@ -40,6 +40,7 @@ copylist = [
     ('files/gnome/profile', '/etc/dconf/profile/user', 0644 ),
     ('files/monitors.xml', '/etc/skel/.config/monitors.xml', 0644),
     ('files/monitors.xml', '/var/lib/lightdm/.config/monitors.xml', 0644),
+    ('files/monitors.xml', '/var/lib/gdm3/.config/monitors.xml', 0644),
 ]
 for src, dst, mode in copylist:
     print ">> copy (0%o) %s" % (mode, dst)
