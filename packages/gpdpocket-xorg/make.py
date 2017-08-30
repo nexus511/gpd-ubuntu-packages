@@ -9,7 +9,7 @@ class Config(object):
     output = os.path.abspath("output")
     manifest = os.path.abspath("build/DEBIAN")
     temp = os.path.abspath("tmp")
-    version = "0.0.2"
+    version = "0.0.3"
     variables = {
         "architecture": "all",
         "maintainer": "Falk Garbsch <github.com@cyberstalker.eu>",
@@ -31,27 +31,11 @@ os.makedirs(config.output)
 os.makedirs(config.build)
 os.makedirs(config.manifest)
 
-print "setup device rotation"
-copylist = [
-    ('files/rotate/01gpd-rotate', '/etc/X11/Xsession.d/01gpd-rotate', 0755),
-    ('files/rotate/01gpd-rotate', '/etc/X11/xinit/xinitrc.d/01gpd-rotate', 0755 ),
-    ('files/rotate/gpd-rotate.conf', '/etc/gpd/rotate.conf', 0644 ),
-    ('files/rotate/gpd-rotate.py', '/usr/local/sbin/gpd-rotate', 0755 ),
-    ('files/rotate/gpd-rotate.service', '/etc/systemd/system/gpd-rotate.service', 0644 )
-]
-for src, dst, mode in copylist:
-    print ">> copy (0%o) %s" % (mode, dst)
-    src = os.path.abspath(src)
-    dst = config.build + dst
-    dn = os.path.dirname(dst)
-    if not os.path.isdir(dn):
-        os.makedirs(dn)
-    shutil.copy(src, dst)
-    os.chmod(dst, mode)
-
 print "setup xorg configuration"
 copylist = [
-    ( 'files/config/20-intel.conf', '/etc/X11/xorg.conf.d/20-intel.conf', 0644 )
+    ( 'files/config/20-intel.conf', '/etc/X11/xorg.conf.d/20-intel.conf', 0644 ),
+    ( 'files/config/40-monitor.conf', '/etc/X11/xorg.conf.d/40-monitor.conf', 0644 ),
+    ( 'files/config/99-touchscreen.conf', '/etc/X11/xorg.conf.d/99-touchscreen.conf', 0644 ),
 ]
 for src, dst, mode in copylist:
     print ">> copy (0%o) %s" % (mode, dst)
@@ -62,14 +46,6 @@ for src, dst, mode in copylist:
         os.makedirs(dn)
     shutil.copy(src, dst)
     os.chmod(dst, mode)
-
-print "enable systemd service"
-src = "/etc/systemd/system/gpd-rotate.service"
-dst = config.build + "/etc/systemd/system/multi-user.target.wants/gpd-rotate.service"
-dn = os.path.dirname(dst)
-if not os.path.exists(dst):
-    os.makedirs(dn)
-os.symlink(src, dst)
 
 print "write control"
 variables = config.variables
