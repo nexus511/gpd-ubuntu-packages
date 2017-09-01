@@ -34,6 +34,7 @@ os.makedirs(config.manifest)
 
 print "copy files"
 copylist = [
+    ('files/gnome/00touchscreen', '/etc/dconf/db/local.d/00touchscreen', 0644),
     ('files/gnome/01scale', '/etc/dconf/db/local.d/01scale', 0644 ),
     ('files/gnome/02subpixel', '/etc/dconf/db/local.d/02subpixel', 0644 ),
     ('files/gnome/profile', '/etc/dconf/profile/gdm', 0644 ),

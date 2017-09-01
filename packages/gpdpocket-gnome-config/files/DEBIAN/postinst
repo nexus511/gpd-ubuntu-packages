@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo "update dconf database"
+dconf update
+
 echo "provide monitors.xml to users that do not have one"
 for dn in /home/*; do
   echo "checking $dn..."
