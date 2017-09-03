@@ -15,9 +15,8 @@ To properly build the packages you need
 - syslinux-utils
 - isolinux
 - xorriso
-
-To build the kernel you will also need
-
+- libudev-dev
+- pciutils-dev
 - libelf-dev
 - build-essential
 - libssl-dev
