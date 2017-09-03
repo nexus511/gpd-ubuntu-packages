@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+for line in btusb loop overlay pwm-lpss pwm-lpss-platform squashfs; do
+        grep -q "^$line\$" /etc/initramfs-tools/modules || echo $line >>/etc/initramfs-tools/modules
+done
+
+if [ -x /usr/sbin/update-initramfs ]; then
+	/usr/sbin/update-initramfs -u -k all
+fi
+

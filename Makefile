@@ -4,25 +4,26 @@ REPO_BASE:=repo
 REPO_DIR:=$(REPO_BASE)/dists/stable/main/binary
 KEYFILE:=common/keyFile
 
-all: $(MAKE_TARGETS)
+all:
+
+packages: $(MAKE_TARGETS)
 	make update_repo
+
 
 %/make.py_build:
 	(cd "`dirname "$@"`"; python2 make.py)
 
-update_kernel: external/kernel
-	(cd $< ; make -j9 INSTALL_MOD_PATH=`realpath ./MODULES` all modules modules_install )
-	tar -cjf bootstrap-kernel-lib.tar.bz2 -C external/kernel/MODULES/ lib
-	mkdir -p build/boot
-	cp external/kernel/System.map build/boot/System.map-`cat external/kernel/include/config/kernel.release`
-	cp external/kernel/.config build/boot/config-`cat external/kernel/include/config/kernel.release`
-	cp external/kernel/arch/x86_64/boot/bzImage build/boot/vmlinuz-`cat external/kernel/include/config/kernel.release`
-	tar -cjf bootstrap-kernel-boot.tar.bz2 -C build/ boot
-	rm -rf build
-	mv bootstrap-kernel-lib.tar.bz2 bootstrap-kernel-boot.tar.bz2 packages/linux-image-gpdpocket/files/
+external/kernel/.kernel_patched: external/kernel
+	(cd external/kernel && bash ./patch_kernel )
+
+build_kernel: external/kernel/.kernel_patched
+	rm -rf external/*.deb packages/prebuilt
+	external/kernel/build_kernel
+	mkdir -p packages/prebuilt/output
+	mv external/*.deb packages/prebuilt/output
 
 update_repo: repo
-	cp -v */*/output/*.deb $(REPO_DIR)
+	cp -v packages/*/output/*.deb $(REPO_DIR)
 	(cd $(REPO_DIR); dpkg-sig -k $(KEY_ID) *.deb)
 	cp $(KEYFILE) $(REPO_BASE)
 	(cd $(REPO_DIR); dpkg-scanpackages -m . >Packages)
@@ -42,3 +43,4 @@ images: update_repo
 
 repo:
 	mkdir -p $(REPO_DIR)
+
