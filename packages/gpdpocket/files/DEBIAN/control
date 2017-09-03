@@ -3,8 +3,8 @@ Source: {name}
 Version: {version}
 Architecture: {architecture}
 Maintainer: {maintainer}
-Depends: gpdpocket-xorg, linux-image-generic, gpdpocket-power, gpdpocket-audio, linux-firmware, gpdpocket-touchegg-config
-Recommends: linux-headers-generic
+Depends: gpdpocket-xorg, linux-image-generic (>= 4.13.0 ), gpdpocket-power, gpdpocket-audio, linux-firmware (= 1.999.0-gpdpocket ), gpdpocket-touchegg-config
+Recommends: linux-headers-generic (>= 4.13.0 )
 Section: admin
 Priority: optional
 Description: Meta package that pulls most of the other gpdpocket packages.

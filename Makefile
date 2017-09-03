@@ -18,7 +18,7 @@ external/kernel/.kernel_patched: external/kernel
 
 build_kernel: external/kernel/.kernel_patched
 	rm -rf external/*.deb packages/prebuilt
-	external/kernel/build_kernel
+	(cd external/kernel && bash ./build_kernel )
 	mkdir -p packages/prebuilt/output
 	mv external/*.deb packages/prebuilt/output
 
@@ -36,7 +36,7 @@ update_repo: repo
 			  gpg --digest-algo SHA256 --default-key $(KEY_ID) -abs -o Release.gpg Release )
 
 sync_repo: update_repo
-	rsync -va repo/. ssh-rsa nexus511.repo:htdocs/repo_testing
+	rsync -va --delete repo/. ssh-rsa nexus511.repo:htdocs/repo_testing
 
 images: update_repo
 	(cd respin && make)
