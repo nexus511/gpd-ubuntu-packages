@@ -10,7 +10,7 @@ class Config(object):
     manifest = os.path.abspath("build/DEBIAN")
     temp = os.path.abspath("tmp")
     templates = os.path.abspath("files/DEBIAN")
-    version = "0.1.0"
+    version = "0.1.2"
     variables = {
         "architecture": "all",
         "maintainer": "Falk Garbsch <github.com@cyberstalker.eu>",
