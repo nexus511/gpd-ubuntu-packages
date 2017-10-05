@@ -1,3 +1,6 @@
 [submodule "external/kernel"]
 	path = external/kernel
 	url = https://github.com/nexus511/linux-sunxi.git
+[submodule "external/linux-firmware"]
+	path = external/linux-firmware
+	url = git@github.com:nexus511/linux-firmware.git
