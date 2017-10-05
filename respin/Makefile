@@ -6,6 +6,8 @@ MINT_18_2_XFCE:=http://mirror.netcologne.de/linuxmint/iso/stable/18.2/linuxmint-
 MINT_18_2_CINNAMON:=http://mirror.netcologne.de/linuxmint/iso/stable/18.2/linuxmint-18.2-cinnamon-64bit.iso|
 LUBUNTU_17_04:=http://cdimage.ubuntu.com/lubuntu/releases/17.04/release/lubuntu-17.04-desktop-amd64.iso|
 LUBUNTU_16_04_3:=http://cdimage.ubuntu.com/lubuntu/releases/16.04.3/release/lubuntu-16.04.3-desktop-amd64.iso|
+UBUNTU_GNOME_16.04.3:=http://cdimage.ubuntu.com/ubuntu-gnome/releases/16.04/release/ubuntu-gnome-16.04.3-desktop-amd64.iso|gpdpocket-gnome-config
+UBUNTU_GNOME_17.04:=http://cdimage.ubuntu.com/ubuntu-gnome/releases/17.04/release/ubuntu-gnome-17.04-desktop-amd64.iso|gpdpocket-gnome-config
 
 remove_target_part = $(patsubst %.sync,%,$(patsubst %.target,%,$1))
 get_target_dist = $(word 1,$(subst -, ,$1))
@@ -24,7 +26,8 @@ endef
 ELEMENTS:=$(UBUNTU_16_04_3) $(UBUNTU_17_04) \
 	$(XUBUNTU_16_04_3) $(XUBUNTU_17_04) \
 	$(MINT_18_2_XFCE) $(MINT_18_2_CINNAMON) \
-	$(LUBUNTU_17_04) $(LUBUNTU_16_04_3)
+	$(LUBUNTU_17_04) $(LUBUNTU_16_04_3) \
+	$(UBUNTU_GNOME_16.04.3) $(UBUNTU_GNOME_17.04)
 
 IMAGES:=$(foreach element,$(ELEMENTS),$(call get_image_part,$(element)))
 ADDITIONS:=$(foreach element,$(ELEMENTS),$(notdir $(element)))

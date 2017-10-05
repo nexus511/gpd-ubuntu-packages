@@ -1,0 +1,13 @@
+Package: {name}
+Version: {version}
+Architecture: {architecture}
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: {maintainer}
+Installed-Size: 202 MB
+Provides: atmel-firmware
+Conflicts: atmel-firmware
+Replaces: atmel-firmware, linux-restricted-common
+Description: Firmware for Linux kernel drivers
+ This package provides firmware used by Linux kernel drivers.

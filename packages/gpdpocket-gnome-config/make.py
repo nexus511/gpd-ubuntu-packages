@@ -10,7 +10,7 @@ class Config(object):
     manifest = os.path.abspath("build/DEBIAN")
     temp = os.path.abspath("tmp")
     templates = os.path.abspath("files/DEBIAN")
-    version = "0.0.3"
+    version = "0.1.0"
     variables = {
         "architecture": "all",
         "maintainer": "Falk Garbsch <github.com@cyberstalker.eu>",
@@ -34,12 +34,14 @@ os.makedirs(config.manifest)
 
 print "copy files"
 copylist = [
+    ('files/gnome/00touchscreen', '/etc/dconf/db/local.d/00touchscreen', 0644),
     ('files/gnome/01scale', '/etc/dconf/db/local.d/01scale', 0644 ),
     ('files/gnome/02subpixel', '/etc/dconf/db/local.d/02subpixel', 0644 ),
     ('files/gnome/profile', '/etc/dconf/profile/gdm', 0644 ),
     ('files/gnome/profile', '/etc/dconf/profile/user', 0644 ),
     ('files/monitors.xml', '/etc/skel/.config/monitors.xml', 0644),
     ('files/monitors.xml', '/var/lib/lightdm/.config/monitors.xml', 0644),
+    ('files/monitors.xml', '/var/lib/gdm3/.config/monitors.xml', 0644),
 ]
 for src, dst, mode in copylist:
     print ">> copy (0%o) %s" % (mode, dst)
