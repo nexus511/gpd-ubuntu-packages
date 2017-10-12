@@ -7,7 +7,7 @@ Source: linux-meta
 Origin: Ubuntu
 Maintainer: {maintainer}
 Installed-Size: 13,3 kB
-Depends: {linux-image-package}, {linux-extra-package}, linux-firmware (= 1.999.0-gpdpocket), thermald
+Depends: {linux-image-package}, {linux-extra-package}, linux-firmware (>= 1.999.0-gpdpocket), thermald
 Description: Generic Linux kernel image
  This package will always depend on the latest generic kernel image
  available.

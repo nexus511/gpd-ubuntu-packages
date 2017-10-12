@@ -5,13 +5,14 @@ import tarfile
 
 class Config(object):
     build = os.path.abspath("build")
+    fwdir = os.path.abspath("%s/lib/firmware" % (build))
     files = os.path.abspath("files")
     output = os.path.abspath("output")
     manifest = os.path.abspath("build/DEBIAN")
-    datafile = os.path.abspath("files/data.tar.gz")
+    datasrc = os.path.abspath("../../external/linux-firmware")
     temp = os.path.abspath("tmp")
     templates = os.path.abspath("files/DEBIAN")
-    version = "1.999.0-gpdpocket"
+    version = "1.999.2-gpdpocket"
     variables = {
         "architecture": "all",
         "maintainer": "Falk Garbsch <github.com@cyberstalker.eu>",
@@ -32,14 +33,13 @@ os.makedirs(config.temp)
 os.makedirs(config.output)
 os.makedirs(config.build)
 os.makedirs(config.manifest)
+os.makedirs(config.fwdir)
 
-print "unpacking firmware archive"
-datafile = tarfile.open(config.datafile, "r")
-datafile.extractall(config.build)
+print "copying firmware files"
+subprocess.call("(cd %s && git archive --format=tar HEAD) | tar -xvC %s" % (config.datasrc, config.fwdir), shell=True)
 
 print "copy brcmfmac4356 firmware"
 copylist = [
-    ( 'files/brcmfmac4356-pcie.bin', '/lib/firmware/brcm/brcmfmac4356-pcie.bin', 0644 ),
     ( 'files/brcmfmac4356-pcie.txt', '/lib/firmware/brcm/brcmfmac4356-pcie.txt', 0644 ),
 ]
 
