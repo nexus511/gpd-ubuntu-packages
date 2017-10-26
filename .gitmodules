@@ -3,4 +3,4 @@
 	url = https://github.com/nexus511/linux-sunxi.git
 [submodule "external/linux-firmware"]
 	path = external/linux-firmware
-	url = https://github.com/nexus511/nexus511/linux-firmware.git
+	url = https://github.com/nexus511/linux-firmware.git
