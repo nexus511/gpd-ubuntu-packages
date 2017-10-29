@@ -1,38 +1,77 @@
-<monitors version="1">
+<monitors version="2">
   <configuration>
-      <clone>no</clone>
-      <output name="DSI1">
+    <migrated/>
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <primary>yes</primary>
+      <transform>
+        <rotation>right</rotation>
+        <flipped>no</flipped>
+      </transform>
+      <monitor>
+        <monitorspec>
+          <connector>DSI1</connector>
           <vendor>???</vendor>
           <product>0x0000</product>
           <serial>0x00000000</serial>
-          <width>1200</width>
-          <height>1920</height>
+        </monitorspec>
+        <mode>
+          <width>1920</width>
+          <height>1200</height>
           <rate>60</rate>
-          <x>0</x>
-          <y>0</y>
-          <rotation>right</rotation>
-          <reflect_x>no</reflect_x>
-          <reflect_y>no</reflect_y>
-          <primary>yes</primary>
-      </output>
+        </mode>
+      </monitor>
+    </logicalmonitor>
   </configuration>
   <configuration>
-    <clone>no</clone>
-    <output name="DSI1">
-      <vendor>unknown</vendor>
-      <product>unknown</product>
-      <serial>unknown</serial>
-      <width>1920</width>
-      <height>1200</height>
-      <rate>60</rate>
+    <logicalmonitor>
       <x>0</x>
       <y>0</y>
-      <rotation>right</rotation>
-      <reflect_x>no</reflect_x>
-      <reflect_y>no</reflect_y>
+      <scale>1</scale>
       <primary>yes</primary>
-      <presentation>no</presentation>
-      <underscanning>no</underscanning>
-    </output>
+      <transform>
+        <rotation>right</rotation>
+        <flipped>no</flipped>
+      </transform>
+      <monitor>
+        <monitorspec>
+          <connector>DSI-1</connector>
+          <vendor>unknown</vendor>
+          <product>unknown</product>
+          <serial>unknown</serial>
+        </monitorspec>
+        <mode>
+          <width>1200</width>
+          <height>1920</height>
+          <rate>60.384620666503906</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+  </configuration>
+  <configuration>
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <scale>1</scale>
+      <primary>yes</primary>
+      <transform>
+        <rotation>right</rotation>
+        <flipped>no</flipped>
+      </transform>
+      <monitor>
+        <monitorspec>
+          <connector>DSI1</connector>
+          <vendor>unknown</vendor>
+          <product>unknown</product>
+          <serial>unknown</serial>
+        </monitorspec>
+        <mode>
+          <width>1200</width>
+          <height>1920</height>
+          <rate>60.384120941162109</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
   </configuration>
 </monitors>
